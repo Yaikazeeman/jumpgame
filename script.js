@@ -5,7 +5,7 @@ window.addEventListener("keyup", setKeyPressFlag, false)
 window.addEventListener("touchstart", setTouch, {passive: false})
 window.addEventListener("touchend", unSetTouch, false)
  
-var lineHeight = 400;
+var lineHeight = 300;
 
 //line
 ctx.beginPath();
