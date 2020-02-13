@@ -2,15 +2,10 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 window.addEventListener("keydown", jump, false)
 window.addEventListener("keyup", setKeyPressFlag, false)
-window.addEventListener("touchstart", setTouch, false)
+window.addEventListener("touchstart", setTouch, {passive: false})
 window.addEventListener("touchend", unSetTouch, false)
-
-
-c.widht = window.innerWidth-30;
-c.height = window.innerHeight-200; 
-
-var scl = 25
-var lineHeight = c.height/1.2;
+ 
+var lineHeight = 400;
 
 //line
 ctx.beginPath();
@@ -18,10 +13,14 @@ ctx.moveTo(0, lineHeight);
 ctx.lineTo(c.width, lineHeight);
 ctx.stroke();
 
+
+//set variables
+var scl = 25
+
 var positionX = c.width-scl;
 var positionY = lineHeight-scl;
-var speed = -4;
-var positionPlayerX = c.width/2;
+var speed = -2;
+var positionPlayerX = 125;
 var positionPlayerY = 0;
 var speedPlayerUp = 4;
 var speedPlayerDown = 2;
@@ -32,6 +31,7 @@ var keyPressFlag = false;
 var whichKey = null;
 var touch = false;
 
+//functions
 function jump(e) {
     keyPressFlag = true;
     whichKey = e.keyCode;
@@ -41,8 +41,8 @@ function jump(e) {
 }    
 
 function setTouch(e) {
+    e.preventDefault();
     touch = true;
-    
 }
 
 function unSetTouch() {
@@ -58,7 +58,6 @@ function playerFall() {
         if(positionPlayerY < lineHeight-scl){
             positionPlayerY += speedPlayerDown;
         }
-
     } 
 }
 
@@ -69,14 +68,15 @@ function increaseScore() {
     }
 }
 
-
 function gameOver() {
-    if(positionX === positionPlayerX && positionY === positionPlayerY){
+    if(positionX === positionPlayerX && positionY <= positionPlayerY+scl){
         score = 0;
         document.getElementById("score").innerHTML = score;
     }
 }
 
+
+//draw on canvas function
 function animate() {
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, c.width, c.height);
@@ -95,6 +95,7 @@ function animate() {
     }
 
     //player
+  
     ctx.fillRect(positionPlayerX, positionPlayerY, scl, scl);
     ctx.stroke()
     
